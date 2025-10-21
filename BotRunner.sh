@@ -11,7 +11,7 @@
 
 BOT=$1
 BOTNAME="${BOT}_bot.py"
-BOTLOCATION=$(find . -type f -name "$BOTNAME" 2> /dev/null)
+BOTLOCATION=$(find ~ -type f -name "$BOTNAME" 2> /dev/null -print -quit)    ##THIS SEARCHES IN THE TRASH ALSO
 
 getTime(){  #Prints current time in HH:MM:SS
     echo $(date +%T)
