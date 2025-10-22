@@ -9,10 +9,6 @@
 # WARNING! This script will only work if the main bot script is named as [BOT_NAME]_bot.py
 # WARNING! This script SHOULD be run the root folder of the bot to make the script faster
 
-BOT=$1
-BOTNAME="${BOT}_bot.py"
-BOTLOCATION=$(find ~ -type f -name "$BOTNAME" 2> /dev/null -print -quit)    ##THIS SEARCHES IN THE TRASH ALSO
-
 getTime(){  #Prints current time in HH:MM:SS
     echo $(date +%T)
 }
@@ -26,6 +22,10 @@ echo    "
 " 
 echo "  By Sebs_ (www.github.com/SebsIII)"
 echo    
+
+BOT=$1
+BOTNAME="${BOT}_bot.py"
+BOTLOCATION=$(find ~ -type f -name "$BOTNAME" 2> /dev/null -print -quit)    ##THIS SEARCHES IN THE TRASH ALSO
 
 ## check system requirements
 if [ ! -z "$BOTLOCATION" ]; then  # checks if BOTNAME exists
@@ -45,6 +45,8 @@ if ( ! screen -ls | grep $BOT > /dev/null); then
     if(screen -dmS "${BOT}-BotRunner" 2> /dev/null); then
         echo "[$(getTime)] - Starting $BOTNAME, stored in $BOTLOCATION."
         echo "[$(getTime)] - Screen started at [$(screen -ls | grep "$BOT" | awk '{print $1}')]"
+
+        screen -S "$BOT" -X stuff "cd $(dirname "$BOTLOCATION") && python3 -m venv "$BOT-VENV" && source $BOT-VENV/bin/activate && python3 ${BOT}_bot.py$(printf \\r)"
     fi
 else
     echo "[$(getTime)] - $BOTNAME is already running at screen ID $(screen -ls | grep "$BOT" | awk -F. '{print $1}' | tr -d '[:space:]')!"
