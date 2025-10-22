@@ -46,7 +46,7 @@ if ( ! screen -ls | grep $BOT > /dev/null); then
         echo "[$(getTime)] - Starting $BOTNAME, stored in $BOTLOCATION."
         echo "[$(getTime)] - Screen started at [$(screen -ls | grep "$BOT" | awk '{print $1}')]"
 
-        screen -S "$BOT" -X stuff "cd $(dirname "$BOTLOCATION") && python3 -m venv "$BOT-VENV" && source $BOT-VENV/bin/activate && python3 ${BOT}_bot.py$(printf \\r)"
+        screen -S "$BOT" -X stuff "cd $(dirname "$BOTLOCATION") && python3 -m venv "$BOT-VENV" && source $BOT-VENV/bin/activate && pip install -r 'requirements.txt' && python3 ${BOT}_bot.py$(printf \\r)"
     fi
 else
     echo "[$(getTime)] - $BOTNAME is already running at screen ID $(screen -ls | grep "$BOT" | awk -F. '{print $1}' | tr -d '[:space:]')!"
