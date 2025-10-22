@@ -57,7 +57,7 @@ fi
 
 
 if ( ! screen -ls | grep $BOT > /dev/null); then
-    if [ -z $(cd $(dirname "$BOTLOCATION") && find . -type f -name "requirements.txt")]; then
+    if [ -z $(cd $(dirname "$BOTLOCATION") && find . -type f -name "requirements.txt") ]; then
         echo "[$(getTime)] - There is no 'requirements.txt' in the BOT folder, wuold you like me to prepare one for you? [Y/n]"
         read reply
         if [ "$reply" = 'y' ] || [ "$reply" = 'Y' ]; then   
@@ -81,6 +81,8 @@ if ( ! screen -ls | grep $BOT > /dev/null); then
             echo "[$(getTime)] - ERROR: Could not continue without requirements.txt file!"
             exit
         fi
+    else
+        echo "It COULD run now"
     fi
 else
     echo "[$(getTime)] - $BOTNAME is already running at screen ID $(screen -ls | grep "$BOT" | awk -F. '{print $1}' | tr -d '[:space:]')!"
