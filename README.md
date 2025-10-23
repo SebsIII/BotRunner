@@ -12,17 +12,19 @@ A way to easly run Telegram BOTs from linux terminal, with a minimal [shell scri
 
 This project started when i was having trouble when setting up my first home server which, other than saving data and files as a [NAS](https://it.wikipedia.org/wiki/Network_Attached_Storage), would also **host Telegram BOTs**. <br>
 The issues started when **dealing with python**, a nice programming language capable of everything, but hard to deal with in linux envs hence those use python internally, so downloading other libraries and updating the already existing ones could *destroy* the system. <br>
-There's where Python VENVs come in action!
+There's where [Python VENVs](https://docs.python.org/3/library/venv.html) come into action! <br>
+They're virtual enviroments *isolated* from the rest of the system, so downloading, updating, changing or doing any option won't damage the main system.
 
 ##  Requirements
 BotRunner needs those commands to be run:
 - [screen](https://www.geeksforgeeks.org/linux-unix/screen-command-in-linux-with-examples/)
 - [python3](https://www.python.org/)
 - [pip](https://pypi.org/project/pip/)
+- SUDO permissions for **chmod +x command**
 - your BOT folder
 
 > [!WARNING]
-> **Make sure that your BOT FILE THAT MUST BE RUN is named as BOTNAME_bot.py**
+> Make sure that your BOT FILE THAT SHOULD BE RUN is named as **BOTNAME_bot.py**
 
 ## Usage
 
@@ -38,8 +40,6 @@ cd /bot/root/folder
 ```
 
 3. Allow BotRunner.sh to be run:
-> [!WARNING]
-> This command needs SUDO permissions! 
 ```
 sudo chmod +x ./BotRunner.sh
 ```
