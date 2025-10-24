@@ -20,7 +20,7 @@ echo    "
  / /_/ / /_/ / /_/ _, _/ /_/ / / / / / / /  __/ /    
 /_____/\____/\__/_/ |_|\__,_/_/ /_/_/ /_/\___/_/     
 " 
-echo "  By Sebs_ (www.github.com/SebsIII) - V1.0"
+echo "  By Sebs_ (www.github.com/SebsIII) - V1-ALFA"
 echo    
 
 BOT=$1
@@ -35,8 +35,8 @@ fi
 ## check system requirements
 if [ ! -z "$BOTLOCATION" ]; then  # checks if BOTNAME exists
     if command -v screen &> /dev/null ; then     #checks if screen is present
-        if command -v python3 &> /dev/null ; then
-            if command -v pip &> /dev/null ; then
+        if command -v python3 &> /dev/null ; then  #checks if python is present
+            if command -v pip &> /dev/null ; then   #checks if pip is present
                 echo "[$(getTime)] - System requirements OK";
             else    
                 echo "[$(getTime)] - ERROR: pip is not present on your system, install it and continue!"
@@ -55,6 +55,7 @@ else
     exit
 fi 
 
+echo "[$(getTime)] - $BOT is located at $BOTLOCATION"
 
 if ( ! screen -ls | grep $BOT > /dev/null); then
     if [ -z $(cd $(dirname "$BOTLOCATION") && find . -type f -name "requirements.txt") ]; then
@@ -69,10 +70,11 @@ if ( ! screen -ls | grep $BOT > /dev/null); then
                     python3 -m venv \"$BOT-VENV\" && \
                     source \"$BOT-VENV/bin/activate\" && \
                     pip install -q pipreqs && \
-                    pipreqs ./ && \
+                    pipreqs ./ --ignore $BOT-VENV && \
                     pip install -q -r requirements.txt && \
-                    python3 ${BOT}_bot.py || screen -S \"$BOT\" -X quit$(printf \\r)
+                    python3 ${BOT}_bot.py$(printf \\r)
                 "
+                ## || screen -S \"$BOT\" -X quit
 
                 echo "[$(getTime)] - My job is done and $BOT should be running, if you want to make sure everything's fine, resume the screen and check."
                 exit
@@ -82,7 +84,22 @@ if ( ! screen -ls | grep $BOT > /dev/null); then
             exit
         fi
     else
-        echo "It COULD run now"
+        echo "[$(getTime)] - requirements.txt found, proceeding with $BOT startup..."
+
+        if(screen -dmS "${BOT}-BotRunner" 2> /dev/null); then
+            echo "[$(getTime)] - Screen started at [$(screen -ls | grep "$BOT" | awk '{print $1}')]"
+            screen -S "$BOT" -X stuff "set -e; \
+                cd $(dirname "$BOTLOCATION") && \
+                python3 -m venv \"$BOT-VENV\" && \
+                source \"$BOT-VENV/bin/activate\" && \
+                pip install -q -r requirements.txt && \
+                python3 ${BOT}_bot.py $(printf \\r)
+            "
+            #|| screen -S \"$BOT\" -X quit
+
+            echo "[$(getTime)] - My job is done and $BOT should be running, if you want to make sure everything's fine, resume the screen and check."
+            exit
+        fi
     fi
 else
     echo "[$(getTime)] - $BOTNAME is already running at screen ID $(screen -ls | grep "$BOT" | awk -F. '{print $1}' | tr -d '[:space:]')!"
